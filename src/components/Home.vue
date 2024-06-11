@@ -2,15 +2,15 @@
   <div class="container">
     <header class="h1 text-primary text-center">Find your Job</header>
     <div class="row">
-      <div class="col-md-6 text-center py-2 jobs">
+      <div class="col-md-6 text-center py-2 jobs" :class="viewComp == 'job' ? 'active' : ''">
         <router-link to="/jobs" class="h2">Jobs</router-link>
       </div>
-      <div class="col-md-6 text-center py-2 favs">
+      <div class="col-md-6 text-center py-2 favs" :class="viewComp == 'fav' ? 'active' : ''">
         <router-link to="/favourites" class="h2">Favourites</router-link>
       </div>
       <!-- <componenet :is="viewComp" class="tab"></componenet> -->
-      <FavouritesList v-if="viewComp == 'FavouritesList'" />
-      <JobsList v-if="viewComp == 'JobsList'" />
+      <FavouritesList v-if="viewComp == 'fav'" />
+      <JobsList v-else />
     </div>
   </div>
 </template>
@@ -23,15 +23,14 @@ import { ref, watch } from "vue";
 
 const routes = useRoute();
 
-const viewComp = ref("JobsList");
+const viewComp = ref(routes.path.trim("/"));
 watch(routes, (newRoute) => {
-    console.log(newRoute.path);
     if (newRoute.path == "/favourites") {
-        viewComp.value = "FavouritesList";
+        viewComp.value = "fav";
     } else {
-        viewComp.value = "JobsList";
+        viewComp.value = "job";
     }
-})
+});
 
 /* export default {
   components: {
@@ -51,11 +50,12 @@ watch(routes, (newRoute) => {
 }; */
 </script>
 
-<style scoped>
+<style>
 a {
   text-decoration: none;
 }
 
+.active,
 .jobs:hover,
 .favs:hover {
   background-color: #180b0b27;
@@ -65,4 +65,5 @@ a {
 .favicon:hover {
   color: gold;
 }
+
 </style>

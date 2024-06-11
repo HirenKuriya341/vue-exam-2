@@ -1,17 +1,17 @@
 <template>
-  <div v-for="job in allJobs" :key="job.id" class="card tab mb-2">
+  <div v-for="job in allJobs" :key="job.id" class="card mb-2">
     <div class="row no-gutters">
-      <div class="col-md-4">
-        <img src="..." alt="..." />
+      <div class="col-md-1">
+        <img :src="job.companyLogo" :alt="job.companyName" class="img-fluid w-100" />
       </div>
-      <div class="col-md-6">
+      <div class="col-md-9">
         <div class="card-body">
-          <div class="card-title">Card Title</div>
-          <div class="card-text">Card Text</div>
+          <div class="card-title">{{ job.title }}</div>
+          <div class="card-text"><span class="text-muted">Company:</span> {{ job.companyName }} <span class="text-muted">Reference:</span> {{ job.reference }}</div>
         </div>
       </div>
       <div class="col-md-2 d-flex align-items-center">
-        <font-awesome-icon :icon="['far', 'star']" class="favicon fa-2x" />
+        <font-awesome-icon :icon="['far', 'star']" class="favicon fa-2x" @click="updateFavourite(job.id)" />
       </div>
     </div>
   </div>
@@ -21,8 +21,10 @@
 import { useStore } from "vuex";
 
 const store = useStore();
-store.dispatch("fetchJobs");
 
 const allJobs = store.getters.allJobs;
-console.log(allJobs);
+
+function updateFavourite(id) {
+  return store.dispatch("editFavouriteList", id);
+}
 </script>
